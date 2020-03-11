@@ -19,34 +19,32 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/livros")
 public class BookController {
 	@Autowired
-	private BookRepository repository;
+	private BookService service;
 	
 	@PostMapping
 	@ResponseBody
 	public BookModel adcionarLivro(@RequestBody BookModel livro) {
-		return repository.save(livro);
+		return service.save(livro);
 	}
 	
 	@GetMapping
 	@ResponseBody
 	public List<BookModel> listarLivros() {
-	  return repository.findAll();
+	  return service.findAll();
 	}
 	@GetMapping("/{id}")
 	@ResponseBody
 	public Optional<BookModel> obterLivro(@PathVariable("id") int id){
-		return repository.findById(id);
+		return service.findById(id);
 	}
 	@PutMapping("/{id}")
 	@ResponseBody
 	public BookModel editarLivro(@PathVariable("id") int id, @RequestBody BookModel novoLivro) {
-		BookModel livroAntigo = repository.findById(id).get();
-		novoLivro.setId(livroAntigo.getId());
-		return repository.save(novoLivro);
+		return service.update(id,novoLivro);
 	}
 	@DeleteMapping("/{id}")
 	public void removerLivro(@PathVariable("id") int id) {
-		repository.deleteById(id);
+		service.delete(id);
 	}
 	
 	
